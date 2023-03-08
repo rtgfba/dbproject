@@ -1,48 +1,108 @@
-const { MongoClient } = require("mongodb");
+const mongoose = require('mongoose');
 
-// Connection URI
-const uri = 'mongodb://localhost:27017';
 
-// Create a new MongoClient
-const client = new MongoClient(uri);
+//looks for db, and if it does not find it, mongoose will automatically create one
+mongoose.connect("mongodb://localhost:27017/fruitsDB");
 
-async function run() {
+
+
+const fruitSchema = new mongoose.Schema ({
+  name: String,
+  rating: Number,
+  review: String
+});
+
+const Fruit = mongoose.model("Fruit", fruitSchema);
+
+
+
+const fruit = new Fruit ({
+  name: "Apple",
+  rating:7,
+  review: "Pretty solid as a fruit."
+});
+
+// fruit.save();
+
+
+
+const kiwi = new Fruit ({
+  name: "kiwi",
+  rating:10,
+  review: "Best fruit."
+});
+
+const orange = new Fruit ({
+  name: "orange",
+  rating:4,
+  review: "Too sour for me."
+});
+
+
+const banana = new Fruit ({
+  name: "banana",
+  rating:3,
+  review: "Weird texture."
+});
+
+
+
+Fruit.find({})
+  .then(fruit => {
+    console.log(fruit);
+  })
+  .catch(err => {
+    console.error(err);
+  });
+  
+// insertData();
+
+
+// async function findData(){
+//   try {
+//     await Fruit.find({});
+//     console.log();
+//   } catch (error){
+//     console.log(error);
+//   } finally {
+//     mongoose.disconnect();
+//   } 
+// }
+
+// findData();
+
+
+async function getFruits() {
   try {
-    // Connect the client to the server (optional starting in v4.7)
-    await client.connect();
-    // Establish and verify connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Connected successfully to server");
+    const fruits = await Fruit.find({}); // returns a Query object
+    console.log(fruits); // handle the results here
+  } catch (error) {
+    console.log(error);
   } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }  
-}
-
-
-
-
-async function run() {
-  try {
-    const database = client.db("fruitsDB");
-    const fruits = database.collection("fruits");
-    // create an array of documents to insert
-    const docs = [
-      { name: "Apple", score: 8, review:"Great fruit" },
-      { name: "Orange", score: 6, review:"Kinda sour" },
-      { name: "Banana", score: 9, review: "Great stuff!" }
-    ];
-    // this option prevents additional documents from being inserted if one fails
-    const options = { ordered: true };
-    const result = await fruits.insertMany(docs, options);
-    console.log(`${result.insertedCount} documents were inserted`);
-  } finally {
-    await client.close();
+    mongoose.disconnect();
   }
 }
 
 
 
+//People collection
+// Create the schema aka template of data entries 
 
-run().catch(console.dir);
+const personSchema = new mongoose.Schema({
+  name: String,
+  age: Number
+});
+
+
+//Create a new model from the schema created
+const Person = mongoose.model("Person", personSchema);
+
+//Create a new person entry
+
+const person1 = new Person ({
+  name:"John",
+  age: 37
+});
+
+// person1.save();
 

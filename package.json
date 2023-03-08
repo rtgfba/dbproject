@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/rtgfba/dbproject#readme",
   "dependencies": {
-    "mongodb": "5.1"
+    "express": "^4.18.2",
+    "mongodb": "5.1",
+    "mongoose": "^7.0.1",
+    "nodemon": "^2.0.21"
   }
 }
