@@ -69,7 +69,7 @@ Fruit.find({})
 //   } 
 // }
 
-// findData();
+// findData() ;
 
 
 async function getFruits() {
