@@ -104,5 +104,5 @@ const person1 = new Person ({
   age: 37
 });
 
-// person1.save();
+person1.save();
 
